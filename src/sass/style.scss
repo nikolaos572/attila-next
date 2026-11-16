@@ -1822,6 +1822,25 @@ textarea {
 	}
 }
 
+.toc-container.has-toc + .post-content {
+	.kg-image-card.kg-width-wide,
+	.kg-image-card.kg-width-full,
+	.kg-gallery-card {
+		max-width: 100% !important;
+		width: 100%;
+		margin-top: 0;
+
+		figcaption {
+			padding-left: 0;
+			padding-right: 0;
+
+			&:after {
+				margin-left: 0;
+			}
+		}
+	}
+}
+
 .toc {
 	padding: 1.5rem 2rem;
 	background: var(--color-background-secondary);
