@@ -1574,6 +1574,9 @@ textarea {
 .nav-footer .nav-wrapper {
 	display: flex;
 	flex-wrap: wrap;
+	max-width: calc(84rem + 8vw);
+	margin: 0 auto;
+	box-sizing: border-box;
 	padding: 0 4rem;
 	gap: 3rem;
 	justify-content: space-between;
