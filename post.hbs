@@ -9,12 +9,14 @@
 
 <header class="post-header {{#if feature_image}} has-cover {{/if}}">
 	<div class="inner">
+		{{!-- Uncomment the block below to bring back the "Article — <Category>" label above the post title:
 		<span class="post-info">
 			<span class="post-type">{{t "Article"}}</span>
 			{{#if tags}}
 			<span class="post-count">{{primary_tag.name}}</span>
 			{{/if}}
 		</span>
+		--}}
 		<h1 class="post-title">{{{title}}}</h1>
 		<div class="post-meta">
 			<div class="post-meta-avatars">
