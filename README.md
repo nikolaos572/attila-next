@@ -2,6 +2,24 @@
 
 `attila-next` is an independent fork of [Attila](https://github.com/zutrinken/attila), a clean, content-focused responsive theme for [Ghost](https://github.com/TryGhost/Ghost), created to further improve and extend the original theme.
 
+<img src="src/screenshot.webp" />
+
+## Features
+
+* Theme options
+* Responsive layout
+* Light and Dark Mode
+* Search support
+* Post reading progress
+* Code highlight including line numbers
+* Comments and Disqus (Theme option)
+* Ghost accent color and custom fonts
+
+## Documentation
+
+* [Localization](docs/LOCALIZATION.md)
+* [Development](docs/DEVELOPMENT.md)
+
 # Origin of this fork
 
 | | |
@@ -21,3 +39,9 @@ Every change made in this fork since then is shown by
 ```
 git diff 3cbf25b HEAD
 ```
+
+## ⚖️ Copyright & License
+
+Copyright (c) 2026 Nikolaos Baras ([@nikolaos572](https://github.com/nikolaos572))  
+Copyright (c) 2015-2025 Peter Amende  
+Released under the [MIT License](LICENSE).

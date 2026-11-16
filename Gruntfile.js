@@ -78,6 +78,8 @@ module.exports = function(grunt) {
             '!src/**',
             '!dist',
             '!dist/**',
+            '!docs',
+            '!docs/**',
             '!.git',
             '!.gitignore',
             '!Gruntfile.js',
