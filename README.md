@@ -14,10 +14,10 @@
 | Upstream commit title | fix header icon position in mobile |
 | Forked on | 2026-11-16 06:47 UTC |
 
-Commit `XXXXXXX` of this repository ("Initial import of upstream attila") holds the files of that upstream commit unchanged, except for this README.md. The
+Commit `3cbf25b` of this repository ("Initial import of upstream attila") holds the files of that upstream commit unchanged, except for this README.md. The
 upstream history was not imported, and later upstream changes are not brought into this fork.
 Every change made in this fork since then is shown by
 
 ```
-git diff XXXXXXX HEAD
+git diff 3cbf25b HEAD
 ```
