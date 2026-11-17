@@ -1977,8 +1977,12 @@ textarea {
 
 .post-header .post-title {
 	margin: 0 0 4rem;
-	font-size: 6em;
+	font-size: 4em;
 	line-height: 1.25em;
+
+	@media only screen and (max-width: $breakpoint-medium) {
+		font-size: 3em;
+	}
 }
 
 .has-cover .post-title {

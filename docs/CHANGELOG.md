@@ -104,3 +104,13 @@ git diff 3cbf25b HEAD
     ```bash
     git revert a3fbafe
     ```
+
+---
+
+## 8. Reduce Post Header Title Font Size on Desktop and Mobile
+- **Title:** *Reduce post header title font size on desktop and mobile*
+- **Files modified:** `src/sass/style.scss`, `assets/css/style.css`
+- **What changed & why:**
+  - Reduced `.post-header .post-title` font size from `6em` (`60px`) to `4em` (`40px`) on desktop, and added a responsive rule setting `font-size: 3em` (`30px`) on mobile viewports (`@media only screen and (max-width: $breakpoint-medium)`, i.e. `<= 640px`).
+  - Previously, `.post-header .post-title` was hardcoded to `6em` (`60px`) with no mobile media query, causing long post titles to look disproportionately huge on desktop and wrap across many hyphenated lines on narrow mobile screens.
+- **How to revert:** Restore `font-size: 6em;` on `.post-header .post-title` in `src/sass/style.scss` and run `npx grunt build`.
