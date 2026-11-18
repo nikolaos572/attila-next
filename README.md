@@ -17,6 +17,7 @@
 
 ## Documentation
 
+* [Changelog](docs/CHANGELOG.md)
 * [Localization](docs/LOCALIZATION.md)
 * [Development](docs/DEVELOPMENT.md)
 

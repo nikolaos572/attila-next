@@ -9,12 +9,14 @@
 
 <header class="post-header {{#if feature_image}} has-cover {{/if}}">
 	<div class="inner">
+		{{!-- Uncomment the block below to bring back the "Article — <Category>" label above the post title:
 		<span class="post-info">
 			<span class="post-type">{{t "Article"}}</span>
 			{{#if tags}}
 			<span class="post-count">{{primary_tag.name}}</span>
 			{{/if}}
 		</span>
+		--}}
 		<h1 class="post-title">{{{title}}}</h1>
 		<div class="post-meta">
 			<div class="post-meta-avatars">
@@ -50,6 +52,13 @@
 <main class="content" role="main">
 	<article class="{{post_class}}">
 		<div class="inner">
+
+			<aside class="toc-container" aria-label="{{t "Table of Contents"}}">
+				<details class="toc" open>
+					<summary class="toc-title">{{t "Table of Contents"}}</summary>
+					<nav class="toc-nav"></nav>
+				</details>
+			</aside>
 
 			<section class="post-content">
 				{{content}}
@@ -218,10 +227,9 @@
 			if (!codeBlock.classList.contains('language-text')) {
 				// Calculate the number of lines
 				var lines = codeBlock.innerHTML.split(/\n(?!$)/g).length;
-				if (lines > 1) lines++; // Account for extra line
 
 				// Generate line numbers
-				var numbers = Array.from({ length: lines - 1 }, (_, i) => {
+				var numbers = Array.from({ length: lines }, (_, i) => {
 				return `<span class="line" aria-hidden="true">${i + 1}</span>`;
 				}).join('');
 
@@ -241,55 +249,107 @@
 		var progressBar = document.querySelector('.progress-bar');
 		var progressContainer = document.querySelector('.progress-container');
 
-		// Helper to calculate the element's position relative to the document
-		function getOffsetTop(element) {
-			var rect = element.getBoundingClientRect();
-			return rect.top + window.scrollY;
-		}
-
 		// Reading progress bar on window top
 		function readingProgress() {
 			if (!post || !progressBar || !progressContainer) return;
 
-			var postBottom = getOffsetTop(post) + post.offsetHeight;
-			var viewportHeight = window.innerHeight;
-			var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-
-			// Calculate progress
-			var progress = 100 - (((postBottom - (scrollTop + viewportHeight) + viewportHeight / 3) / 
-								(postBottom - viewportHeight + viewportHeight / 3)) * 100);
+			var scrollTop = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+			var maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+			var progress = maxScroll > 0 ? Math.min(Math.max((scrollTop / maxScroll) * 100, 0), 100) : 100;
 
 			// Update progress bar width
-			progressBar.style.width = Math.min(progress, 100) + '%';
-
-			// Add or remove the 'complete' class
-			if (progress > 100) {
-				progressContainer.classList.add('complete');
-			} else {
-				progressContainer.classList.remove('complete');
-			}
+			progressBar.style.width = progress + '%';
 		}
 
 		// Initial call
 		readingProgress();
 
-		// Throttle function to optimize scroll and resize events
-		function throttle(callback, delay) {
-			var lastCall = 0;
-			return function () {
-			var now = Date.now();
-			if (now - lastCall >= delay) {
-				lastCall = now;
-				callback();
+		var progressTicking = false;
+		function onProgressScroll() {
+			if (!progressTicking) {
+				window.requestAnimationFrame(function () {
+					readingProgress();
+					progressTicking = false;
+				});
+				progressTicking = true;
 			}
-			};
 		}
 
 		// Attach scroll, resize, and orientationchange events
-		var optimizedReadingProgress = throttle(readingProgress, 50);
-		window.addEventListener('scroll', optimizedReadingProgress);
-		window.addEventListener('resize', optimizedReadingProgress);
-		window.addEventListener('orientationchange', optimizedReadingProgress);
+		window.addEventListener('scroll', onProgressScroll, { passive: true });
+		window.addEventListener('resize', onProgressScroll);
+		window.addEventListener('orientationchange', onProgressScroll);
+
+		// Table of Contents generation
+		var tocContainer = document.querySelector('.toc-container');
+		var tocNav = document.querySelector('.toc-nav');
+		if (post && tocContainer && tocNav) {
+			var headings = Array.from(post.querySelectorAll('h1, h2, h3, h4'));
+			if (headings.length > 0) {
+				var minLevel = Math.min.apply(null, headings.map(function (h) {
+					return parseInt(h.tagName.substring(1), 10);
+				}));
+
+				var usedIds = {};
+				var rootUl = document.createElement('ul');
+				var stack = [{ level: minLevel, ul: rootUl }];
+
+				headings.forEach(function (heading, index) {
+					if (!heading.id) {
+						var baseId = heading.textContent.trim().toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-') || ('section-' + (index + 1));
+						var id = baseId;
+						var counter = 1;
+						while (document.getElementById(id) || usedIds[id]) {
+							id = baseId + '-' + (counter++);
+						}
+						heading.id = id;
+					}
+					usedIds[heading.id] = true;
+
+					var level = parseInt(heading.tagName.substring(1), 10);
+					while (stack.length > 1 && stack[stack.length - 1].level >= level) {
+						stack.pop();
+					}
+					while (stack[stack.length - 1].level < level - 1) {
+						var parentUl = stack[stack.length - 1].ul;
+						var lastLi = parentUl.lastElementChild;
+						if (!lastLi) {
+							lastLi = document.createElement('li');
+							parentUl.appendChild(lastLi);
+						}
+						var nextUl = document.createElement('ul');
+						lastLi.appendChild(nextUl);
+						stack.push({ level: stack[stack.length - 1].level + 1, ul: nextUl });
+					}
+
+					var currentParentUl = stack[stack.length - 1].ul;
+					if (level > stack[stack.length - 1].level) {
+						var parentLi = currentParentUl.lastElementChild;
+						if (!parentLi) {
+							parentLi = document.createElement('li');
+							currentParentUl.appendChild(parentLi);
+						}
+						var subUl = parentLi.querySelector(':scope > ul');
+						if (!subUl) {
+							subUl = document.createElement('ul');
+							parentLi.appendChild(subUl);
+						}
+						stack.push({ level: level, ul: subUl });
+						currentParentUl = subUl;
+					}
+
+					var li = document.createElement('li');
+					var a = document.createElement('a');
+					a.href = '#' + heading.id;
+					a.textContent = heading.textContent;
+					li.appendChild(a);
+					currentParentUl.appendChild(li);
+				});
+
+				tocNav.appendChild(rootUl);
+				tocContainer.classList.add('has-toc');
+			}
+		}
 	});
 
 </script>

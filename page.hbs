@@ -64,10 +64,9 @@
 			if (!codeBlock.classList.contains('language-text')) {
 				// Calculate the number of lines
 				var lines = codeBlock.innerHTML.split(/\n(?!$)/g).length;
-				if (lines > 1) lines++; // Account for extra line
 
 				// Generate line numbers
-				var numbers = Array.from({ length: lines - 1 }, (_, i) => {
+				var numbers = Array.from({ length: lines }, (_, i) => {
 				return `<span class="line" aria-hidden="true">${i + 1}</span>`;
 				}).join('');
 
