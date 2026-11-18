@@ -7,7 +7,8 @@
 $breakpoint-large: 960px;
 $breakpoint-medium: 640px;
 $breakpoint-small: 480px;
-$inner: calc(64rem + 8vw);
+// Leave room for the desktop table of contents, its gap, and the viewport gutter.
+$inner: max(calc(64rem + 8vw), min(104rem, calc(100vw - 64rem)));
 /* ==========================================================================
    Basics
    ========================================================================== */
@@ -15,6 +16,7 @@ $inner: calc(64rem + 8vw);
 html {
 	font-size: 62.5%;
 	overflow-x: clip;
+	scrollbar-gutter: stable;
 }
 
 .menu-active body,
@@ -1281,7 +1283,7 @@ textarea {
 
 .nav-header .nav-wrapper {
 	display: flex;
-	max-width: calc(84rem + 8vw);
+	max-width: calc($inner + 20rem);
 	margin: 0 auto;
 	box-sizing: border-box;
 	max-height: calc(100vh - 6rem);
@@ -1575,7 +1577,7 @@ textarea {
 .nav-footer .nav-wrapper {
 	display: flex;
 	flex-wrap: wrap;
-	max-width: calc(84rem + 8vw);
+	max-width: calc($inner + 20rem);
 	margin: 0 auto;
 	box-sizing: border-box;
 	padding: 0 4rem;
