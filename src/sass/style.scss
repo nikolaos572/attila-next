@@ -1699,19 +1699,25 @@ textarea {
 	position: relative;
 
 	.post .post-box {
-		padding-top: calc(4rem + 2vw);
-		padding-bottom: calc(4rem + 2vw);
-		border-bottom: 1px solid var(--color-background-contrast);
+		position: relative;
+		margin: 2.4rem 0;
+		padding: clamp(2rem, 3vw, 3rem);
+		overflow-wrap: anywhere;
+		background: var(--color-background-main);
+		border: 1px solid var(--color-background-contrast);
+		border-radius: 0.8rem;
+		box-shadow: 0 0.4rem 1.6rem rgba(0, 0, 0, 0.16);
 	}
 
-	#results .post:first-child .post-box {
-		border-top: 1px solid var(--color-background-contrast);
+	.post.featured .post-box {
+		background-color: color-mix(in srgb, var(--color-background-main), var(--ghost-accent-color) 10%);
 	}
 }
 
 .post-feature {
 	display: flex;
 	position: absolute;
+	left: 0;
 	justify-content: center;
 	width: 2em;
 	margin-left: -2em;
@@ -1721,28 +1727,6 @@ textarea {
 	color: var(--ghost-accent-color);
 }
 
-.container .post.featured .inner {
-	position: relative;
-}
-
-.container .post.featured .inner:after {
-	content: '';
-	position: absolute;
-	z-index: -1;
-	top: 0;
-	width: calc(100% - 4rem);
-	height: calc(100% - 2rem);
-	background: var(--ghost-accent-color);
-	opacity: 0.1;
-	border-radius: 8px;
-
-	margin-left: -6rem;
-	margin-top: 1rem;
-	@media only screen and (max-width: $breakpoint-medium) {
-		width: 100%;
-		margin-left: -4rem;
-	}
-}
 /* ==========================================================================
    Post
    ========================================================================== */
