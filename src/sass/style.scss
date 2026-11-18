@@ -919,6 +919,10 @@ textarea {
 	position: relative;
 	padding-top: calc(16rem + 4vw);
 
+	.home-template &:not(.has-cover) {
+		padding-top: calc(12rem + 2vw);
+	}
+
 	&.has-cover {
 		padding-top: calc(24rem + 8vw);
 		color: white;
@@ -1964,10 +1968,15 @@ textarea {
 
 .post-header .post-title {
 	margin: 0 0 4rem;
-	font-size: 4em;
-	line-height: 1.25em;
+}
 
-	@media only screen and (max-width: $breakpoint-medium) {
+.post-box .post-title {
+	font-size: 3.6em;
+}
+
+@media only screen and (max-width: $breakpoint-medium) {
+	.post-header .post-title,
+	.post-box .post-title {
 		font-size: 3em;
 	}
 }
